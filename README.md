@@ -2,13 +2,19 @@
 
 Lint agent `SKILL.md` files for the things that break a skill without anyone noticing.
 
+> The package is **`agent-skill-lint`**, not `skill-lint`. That name on npm belongs to
+> somebody else's tool, a security linter that looks for prompt injection in a skill before
+> you install it. Different job, and running the wrong one because a README said so is not a
+> mistake worth leaving available. Nothing here is published to npm yet, so install it from
+> the repository.
+
 A skill fails quietly. It points at a reference file that was never copied, or claims a
 trigger phrase another skill already owns, or carries a description too vague for a model
 to route on. Nothing errors. It just does not fire, or the wrong one fires, and you find
 out weeks later.
 
 ```bash
-npx skill-lint .
+npx github:rlawoals0529/skill-lint .
 ```
 
 ```
@@ -90,7 +96,7 @@ skill-lint [dir] [options]
 ## Use it as a library
 
 ```ts
-import { lint } from "skill-lint";
+import { lint } from "agent-skill-lint";
 
 for (const f of lint("./skills")) {
   console.log(f.severity, f.rule, f.skill, f.message);
@@ -99,11 +105,11 @@ for (const f of lint("./skills")) {
 
 ### In a browser
 
-`skill-lint/core` is the same parser and the same rules with **no filesystem imports**, so it
-runs anywhere:
+`agent-skill-lint/core` is the same parser and the same rules with **no filesystem imports**,
+so it runs anywhere:
 
 ```ts
-import { parseSkill, lintSkills } from "skill-lint/core";
+import { parseSkill, lintSkills } from "agent-skill-lint/core";
 
 const skills = files.map((f) => parseSkill(f.text, { dir: f.name }));
 for (const f of lintSkills(skills)) console.log(f.rule, f.skill);
@@ -116,7 +122,7 @@ nothing about it, not assume the happy answer.
 ## CI
 
 ```yaml
-- run: npx skill-lint .
+- run: npx github:rlawoals0529/skill-lint .
 ```
 
 MIT
