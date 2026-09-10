@@ -58,6 +58,11 @@ paths and are skipped:
 The first run of this tool reported a path from inside a fenced block showing example
 output. A linter that cries wolf gets muted, so those four exclusions are covered by tests.
 
+## Examples
+
+Two reference skills live in [`examples/`](examples), and CI lints them on every push — so
+the tool is exercised against real files rather than only its own fixtures.
+
 ## Options
 
 ```
