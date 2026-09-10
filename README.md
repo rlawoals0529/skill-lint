@@ -63,6 +63,19 @@ output. A linter that cries wolf gets muted, so those four exclusions are covere
 Two reference skills live in [`examples/`](examples), and CI lints them on every push — so
 the tool is exercised against real files rather than only its own fixtures.
 
+## Waiving a rule
+
+A linter with no escape hatch gets switched off wholesale the first time it is confidently
+wrong. Waive one rule for one skill from inside the skill:
+
+```markdown
+<!-- skill-lint disable trigger-collision -->
+```
+
+Waivers are per rule and per skill, never global. A collision names every owner, so it is
+suppressed only when **every** one of them has waived it — one skill cannot silence a
+conflict on another's behalf.
+
 ## Options
 
 ```

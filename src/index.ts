@@ -130,14 +130,37 @@ export interface Options {
   maxDescription?: number;
 }
 
+/**
+ * A skill may waive a rule for itself with a line like:
+ *
+ *   <!-- skill-lint disable trigger-collision -->
+ *
+ * An escape hatch is not a weakness in a linter, it is what stops one being switched off
+ * wholesale the first time it is confidently wrong. Waivers are per rule and per skill,
+ * never global.
+ */
+function waived(skill: Skill): Set<string> {
+  const out = new Set<string>();
+  for (const m of skill.body.matchAll(/<!--\s*skill-lint\s+disable\s+([a-z-]+(?:\s*,\s*[a-z-]+)*)\s*-->/g)) {
+    for (const rule of m[1]!.split(",")) out.add(rule.trim());
+  }
+  return out;
+}
+
 export function lint(root: string, opts: Options = {}): Finding[] {
   const maxLines = opts.maxLines ?? 500;
   const minDescription = opts.minDescription ?? 40;
   const maxDescription = opts.maxDescription ?? 1024;
 
   const skills = findSkills(root);
+  const waivers = new Map(skills.map((s) => [s.name || basename(s.dir), waived(s)]));
   const findings: Finding[] = [];
-  const add = (f: Finding) => findings.push(f);
+  const add = (f: Finding) => {
+    // A collision names every owner, so it is waived only if every one of them waived it.
+    const owners = f.skill.split(",").map((s) => s.trim());
+    if (owners.every((o) => waivers.get(o)?.has(f.rule))) return;
+    findings.push(f);
+  };
   const names = new Set(skills.map((s) => s.name).filter(Boolean));
 
   for (const s of skills) {

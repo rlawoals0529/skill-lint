@@ -129,3 +129,20 @@ describe("only checkable paths are checked", () => {
     expect(f?.severity).toBe("warn");
   });
 });
+
+describe("waivers", () => {
+  it("suppresses a rule a skill waived for itself", () => {
+    skill("omicron", "name: omicron\ndescription: Short.", "<!-- skill-lint disable thin-description -->");
+    expect(lint(root).find((x) => x.skill === "omicron" && x.rule === "thin-description")).toBeUndefined();
+  });
+  it("does not suppress a rule the skill did not waive", () => {
+    skill("pi", "name: not-pi\ndescription: Short.", "<!-- skill-lint disable thin-description -->");
+    expect(lint(root).find((x) => x.skill === "not-pi" && x.rule === "name-mismatch")).toBeDefined();
+  });
+  it("waives a collision only when every owner waived it", () => {
+    skill("rho", 'name: rho\ndescription: A long enough description that triggers on "shared trigger here".',
+      "<!-- skill-lint disable trigger-collision -->");
+    skill("sigma", 'name: sigma\ndescription: A long enough description that triggers on "shared trigger here".');
+    expect(lint(root).find((x) => x.rule === "trigger-collision" && x.skill.includes("rho"))).toBeDefined();
+  });
+});
