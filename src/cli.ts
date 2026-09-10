@@ -10,7 +10,7 @@ const root = args.find((a) => !a.startsWith("-") && Number.isNaN(Number(a))) ?? 
 const warnOnly = args.includes("--warn-only");
 
 if (args.includes("-h") || args.includes("--help")) {
-  console.log(`skill-lint [dir] [options]
+  console.log(`agent-skill-lint [dir] [options]
 
   --max-lines N        Flag a skill longer than N lines (default 500)
   --min-description N  Flag a description shorter than N chars (default 40)
