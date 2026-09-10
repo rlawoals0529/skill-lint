@@ -97,6 +97,22 @@ for (const f of lint("./skills")) {
 }
 ```
 
+### In a browser
+
+`skill-lint/core` is the same parser and the same rules with **no filesystem imports**, so it
+runs anywhere:
+
+```ts
+import { parseSkill, lintSkills } from "skill-lint/core";
+
+const skills = files.map((f) => parseSkill(f.text, { dir: f.name }));
+for (const f of lintSkills(skills)) console.log(f.rule, f.skill);
+```
+
+The `broken-reference` rule is **skipped** rather than guessed at when there is no way to
+check a path. Pass `refExists` to enable it. A linter that cannot check something must say
+nothing about it, not assume the happy answer.
+
 ## CI
 
 ```yaml
