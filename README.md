@@ -50,8 +50,8 @@ Errors exit 1. Warnings do not.
 The hard part is not finding candidates, it is not burying the real ones. These look like
 paths and are skipped:
 
-- **Globs** — `tests/*.spec.ts`
-- **Templated placeholders** — `{lang}/api/README.md`, `specs/<flow>.md`
+- **Globs** - `tests/*.spec.ts`
+- **Templated placeholders** - `{lang}/api/README.md`, `specs/<flow>.md`
 - **Anything containing whitespace**, which is a command rather than a path
 - **Fenced code blocks entirely**, because an example output listing is not a reference
 
@@ -60,7 +60,7 @@ output. A linter that cries wolf gets muted, so those four exclusions are covere
 
 ## Examples
 
-Two reference skills live in [`examples/`](examples), and CI lints them on every push — so
+Two reference skills live in [`examples/`](examples), and CI lints them on every push - so
 the tool is exercised against real files rather than only its own fixtures.
 
 ## Waiving a rule
@@ -73,7 +73,7 @@ wrong. Waive one rule for one skill from inside the skill:
 ```
 
 Waivers are per rule and per skill, never global. A collision names every owner, so it is
-suppressed only when **every** one of them has waived it — one skill cannot silence a
+suppressed only when **every** one of them has waived it - one skill cannot silence a
 conflict on another's behalf.
 
 ## Options
