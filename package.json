@@ -1,0 +1,23 @@
+{
+  "name": "skill-lint",
+  "version": "0.1.0",
+  "description": "Lint agent SKILL.md files for broken references, colliding triggers, unroutable descriptions and context bloat.",
+  "type": "module",
+  "bin": { "skill-lint": "./dist/cli.js" },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint:self": "node dist/cli.js ."
+  },
+  "keywords": ["agent", "skills", "claude", "lint", "SKILL.md", "ai-agents"],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
