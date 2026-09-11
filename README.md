@@ -51,7 +51,7 @@ published ones.
 
 Errors exit 1. Warnings do not.
 
-## Not reported, on purpose
+## What it does not report
 
 The hard part is not finding candidates, it is not burying the real ones. These look like
 paths and are skipped:
