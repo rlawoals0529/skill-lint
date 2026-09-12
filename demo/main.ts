@@ -12,7 +12,7 @@
  * reads as a pass.
  */
 import { lintSkills, parseSkill, type Finding, type Skill } from "../dist/core.js";
-import { createThemeStore, grouped, type Theme } from "./lib/theme.js";
+import { createThemeStore, DEFAULT_THEME, grouped, type Theme } from "./lib/theme.js";
 import { wirePalette } from "./lib/palette-keys.js";
 import { EXAMPLES } from "./examples.js";
 import { FAILING } from "./failing.js";
