@@ -13,6 +13,22 @@ trigger phrase another skill already owns, or carries a description too vague fo
 to route on. Nothing errors. It just does not fire, or the wrong one fires, and you find
 out weeks later.
 
+## Try it without installing anything
+
+**[rlawoals0529.github.io/skill-lint](https://rlawoals0529.github.io/skill-lint/)** -
+paste a `SKILL.md`, get the findings, in your browser
+
+`src/core.ts` has no `node:fs` in it, which is the only reason that page can exist: the rules
+are pure functions over already-parsed skills, and the two that need a filesystem are named
+on the page rather than quietly skipped. **`broken-reference`** takes its existence check as
+an injected option and does nothing without it; **`name-mismatch`** compares a frontmatter
+name against a directory, and pasted text has none. Handing either one a plausible answer
+would make it pass every time, which is not the rule passing.
+
+![The demo: two skills pasted in, a trigger collision and an unportable reference reported, and the two rules that cannot run in a browser named above the report](docs/screenshot.png)
+
+## On the command line
+
 ```bash
 npx github:rlawoals0529/skill-lint .
 ```

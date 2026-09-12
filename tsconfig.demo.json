@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /* Beside the source, not into dist/. `files` in package.json is ["dist"], so anything
+       compiled there ships with the library, and a linter has no business exporting a
+       palette switcher. */
+    "outDir": "demo",
+    "rootDir": "demo",
+    "declaration": false,
+    "types": []
+  },
+  "include": ["demo"],
+  "exclude": ["demo/lib/*.test.ts"]
+}

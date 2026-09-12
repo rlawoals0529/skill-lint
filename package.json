@@ -16,7 +16,9 @@
     "prepare": "npm run build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint:self": "node dist/cli.js ."
+    "lint:self": "node dist/cli.js .",
+    "build:demo": "node scripts/sync-examples.mjs && tsc -p tsconfig.demo.json",
+    "e2e": "playwright test"
   },
   "keywords": [
     "agent",
@@ -28,7 +30,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^22.10.2",
+    "happy-dom": "^20.14.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   },

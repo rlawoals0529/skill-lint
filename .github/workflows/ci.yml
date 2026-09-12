@@ -17,3 +17,28 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node dist/cli.js .
+
+      # The demo inlines examples/ so the page needs no request to open on a real set. A
+      # stale copy is a demo of a skill nobody has.
+      - name: The demo's copy of the examples is current
+        run: |
+          npm run build:demo
+          git diff --exit-code demo/examples.ts \
+            || { echo "demo/examples.ts is stale. Run: npm run build:demo"; exit 1; }
+
+  demo:
+    name: The demo works in a browser
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 7

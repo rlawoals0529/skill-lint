@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>skill-lint - what breaks a skill without anyone noticing</title>
+<meta name="description" content="Paste one or more SKILL.md files and see what a linter finds: broken references, colliding triggers, unroutable descriptions, context bloat. Runs entirely in your browser.">
+<link rel="stylesheet" href="./theme/palettes.css">
+<link rel="stylesheet" href="./theme/base.css">
+<link rel="stylesheet" href="./theme/layout-flat.css">
+<link rel="stylesheet" href="./theme/type.css">
+<link rel="stylesheet" href="./theme/texture.css">
+<link rel="stylesheet" href="./style.css">
+<script>
+  /* Before first paint, so the page never shows one palette and swaps to another. Every
+     palette block declares its own color-scheme, so the attribute is enough; the module sets
+     it again through the store, which is a no-op when they agree. Wrapped because
+     localStorage throws outright in a private window. */
+  (function () {
+    var t;
+    try { t = localStorage.getItem("skill-lint:theme"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t || "twilight-comet");
+  })();
+</script>
+</head>
+<body class="grain">
+<div class="wrap">
+  <h1>skill<span>-lint</span></h1>
+  <p class="tagline">
+    A skill fails quietly. It points at a file nobody copied, claims a trigger another skill
+    already owns, or carries a description too vague to route on. Nothing errors.
+  </p>
+  <p class="assurance">
+    Runs entirely in your browser · nothing uploaded · the same rules the CLI runs
+  </p>
+
+  <section class="panel">
+    <h2>The skills</h2>
+    <p class="note" id="count"></p>
+    <div id="editors"></div>
+    <div class="row">
+      <button id="add" type="button">Add a skill</button>
+      <button id="failing" type="button">A set that fails</button>
+      <button id="examples" type="button">Two real skills</button>
+      <button id="lint" class="primary" type="button">Lint</button>
+    </div>
+  </section>
+
+  <section class="panel" id="report-panel">
+    <h2>The report</h2>
+    <!-- What could not be checked comes before what was, for the same reason a linter that
+         cannot check something must say nothing about it rather than assume the happy
+         answer: a clean report that silently skipped a rule reads as a pass. -->
+    <div class="cannot">
+      <p class="cannot-label">Not run here</p>
+      <ul>
+        <li>
+          <code>broken-reference</code> - a browser has no filesystem, so whether a referenced
+          file exists cannot be checked. <code>lintSkills()</code> takes that check as an
+          injected option and skips the rule when it is missing rather than guessing.
+        </li>
+        <li>
+          <code>name-mismatch</code> - compares the frontmatter name against the skill's
+          directory, and pasted text has no directory. Handing it one equal to the name would
+          make the rule pass every time, which is not the rule passing.
+        </li>
+      </ul>
+      <p class="cannot-foot">
+        Both run in
+        <a href="https://github.com/rlawoals0529/skill-lint">the CLI</a>, where there are real
+        files to look at.
+      </p>
+    </div>
+    <pre id="report" class="report" tabindex="0" aria-live="polite"></pre>
+    <p class="note" id="summary"></p>
+  </section>
+
+  <div id="palette-host"></div>
+</div>
+<script type="module" src="./main.js"></script>
+</body>
+</html>

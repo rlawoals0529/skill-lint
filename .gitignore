@@ -1,2 +1,9 @@
 node_modules
 dist
+
+# The demo is compiled beside its source, never into dist/ - package.json ships files:
+# ["dist"], and a linter has no business exporting a palette switcher. So the compiled
+# output is ignored the way dist/ is, and only the TypeScript is committed.
+demo/**/*.js
+test-results/
+playwright-report/
